@@ -6,8 +6,8 @@ var app = new Koa();
 // $ GET /
 
 app.use(function (ctx, next){
-  // if ('/' == ctx.path) return ctx.body = 'Try GET /package.json';
-  return send(ctx, ctx.path);
+  if ('/' == ctx.path) ctx.path = 'index.html';
+  return send(ctx, ctx.path, { root: __dirname + '/starter-template' });
 })
 
 app.listen(3000);
