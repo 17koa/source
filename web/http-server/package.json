@@ -6,7 +6,7 @@
   "scripts": {
     "app": "node app.js",
     "send": "node send.js",
-    "hs":"hs starter-template -p 3000 -d -o"
+    "hs": "hs starter-template -p 3000 -d -o"
   },
   "repository": {
     "type": "git",
@@ -21,6 +21,7 @@
   "dependencies": {
     "koa": "^2.0.0",
     "koa-send": "^3.2.0",
-    "koa-static": "^2.0.0"
+    "koa-static": "^2.0.0",
+    "open": "0.0.5"
   }
 }
