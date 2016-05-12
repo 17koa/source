@@ -37,6 +37,21 @@ test('#find() return array', t => {
   });
 });
 
+test('#findById() return array', t => {  
+  const _user = new User({
+    username: 'i5ting for findById',
+    password: '0123456789'
+  });
+  _user.save((err, u) => {
+    t.is(u.username, 'i5ting for findById');
+    
+    User.findById(u._id, (err, doc) => {
+      t.false(err);
+      t.is(doc.username, 'i5ting');
+    });
+  });
+});
+
 test('#findOne() return user obj', t => {
   User.findOne({username: 'i5ting'}, (err, doc) => {
     t.false(err);
