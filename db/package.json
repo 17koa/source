@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "ava crud -v"
+    "test": "ava crud -v",
+    "extend":"ava -v extend/test.js"
   },
   "author": "",
   "license": "ISC",
