@@ -74,8 +74,11 @@ UserSchema.methods.is_exist = function() {
         console.log(err)
         return false;
       }
+      if (user) {
+        return true;
+      }
       
-      return true;
+      return false;
     });
   } else {
     console.log('keep username && password exist')
