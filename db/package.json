@@ -4,8 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "ava crud -v",
-    "extend":"ava -v extend/test.js"
+    "test": "npm run crud && npm run extend && npm run virtual",
+    "crud": "ava crud -v",
+    "extend":"ava -v extend/test.js",
+    "virtual":"ava -v virtual/test.js"
   },
   "author": "",
   "license": "ISC",

@@ -1,5 +1,8 @@
 var mongoose = require("mongoose");
 
+// 核心代码，是否开启测试
+mongoose.set('debug', false);
+
 var db = mongoose.connect("mongodb://127.0.0.1:27017/db_helloworld"); 
 
 db.connection.on("error", function (error) {  

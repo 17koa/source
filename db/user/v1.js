@@ -1,23 +1,14 @@
-var LOCK_TIME, MAX_LOGIN_ATTEMPTS, SALT_WORK_FACTOR, Schema, UserSchema, bcrypt, mongoose;
-
 var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
-var Promise = require('bluebird');
-var autoIncrement = require('mongoose-auto-increment');
 
-autoIncrement.initialize(mongoose.connection);
-
-Schema = mongoose.Schema;
-
-SALT_WORK_FACTOR = 10;
-
-MAX_LOGIN_ATTEMPTS = 5;
-
-LOCK_TIME = 2 * 60 * 60 * 1000;
-
-UserSchema = new Schema({
+// 定义Schema
+UserSchema = new mongoose.Schema({
   username: {// 真实姓名
-    type: String
+    type: String,
+    required: true
+  },
+  password: { // 密码
+    type: String,
+    required: true
   },
   id_card: {
     type: String
@@ -26,20 +17,8 @@ UserSchema = new Schema({
     type: Number,
     "default": 2
   },
-  stock_total: { // 库存总和
-    type: Number,
-    "default": 0
-  },
-  partner_count: { //团队成员数量
-    type: Number,
-    default: 0
-  },
   weixin_name: String,
   signature: String, //个性签名
-  password: { // 密码
-    type: String,
-    required: false
-  },
   type: {
     type: Number,
     required: false,
@@ -71,9 +50,46 @@ UserSchema = new Schema({
 });
 
 
-var UserModel = mongoose.model('UserModel', UserSchema);
+/**
+ * 根据用户名查找
+ */ 
+UserSchema.statics.find_by_username = function(username, cb) {
+  return this.findOne({
+    username: username
+  }, cb);
+};
 
-Promise.promisifyAll(UserModel);
-Promise.promisifyAll(UserModel.prototype);
+/**
+ * 是否存在
+ */ 
+UserSchema.methods.is_exist = function() {
+  if (this.username.length > 0 && this.password.length > 0) {
+    var query = {
+      username: this.username,
+      password: this.password
+    };
+  
+    this.model('User').findOne(query, function (err, user) {
+      if (err) {
+        console.log(err)
+        return false;
+      }
+      if (user) {
+        return true;
+      }
+      
+      return false;
+    });
+  } else {
+    console.log('keep username && password exist')
+    return false;
+  }
+  
+  return false;
+};
 
+// 定义Model
+var UserModel = mongoose.model('User', UserSchema);
+
+// 暴露接口
 module.exports = UserModel;

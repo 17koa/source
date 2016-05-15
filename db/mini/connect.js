@@ -11,4 +11,5 @@ db.connection.on("error", function (error) {
 
 db.connection.on("open", function () {  
   console.log("数据库连接成功");
+  mongoose.connection.db.dropDatabase();
 });

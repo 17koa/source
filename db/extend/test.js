@@ -1,7 +1,7 @@
 import test from 'ava';
 
 // 1、引入`mongoose connect`
-require('./connect');
+require('../connect');
 
 // 2、引入`User` Model
 const User = require('./user');
@@ -44,6 +44,6 @@ test('#is_exist()', t => {
 
 test.after(t => {
   User.remove({}, (err, result) => {
-    
+
   })
 })

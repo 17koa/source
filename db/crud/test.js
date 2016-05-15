@@ -7,25 +7,27 @@ require('../mini/connect');
 const User = require('../mini/user');
 
 // 3、定义`user` Entity
-const user = new User({
+let user = new User({
   username: 'i5ting',
   password: '0123456789'
 });
 
-test.before(t => {
-  // 这个会在所有测试前运行
-  User.remove({}, function(err){
-    if (err)
-      console.log(err);
-    
-    t.pass();
-  })
-});
+
+global.log = console.log
+
 
 test('#save()', t => {
   user.save((err, u) => {
-    t.false(err);
+    if (err) log(err)
     t.is(u.username, 'i5ting');
+  });
+});
+
+test.before.cb(t => {
+  User.remove({}, function(err, result){
+    User.find({}, (err, docs) => {
+      t.end();
+    }) 
   });
 });
 
@@ -37,20 +39,24 @@ test('#find() return array', t => {
   });
 });
 
-test('#findById() return array', t => {  
-  const _user = new User({
+test('#findById() return one', t => {
+  let _user = new User({
     username: 'i5ting for findById',
-    password: '0123456789'
+    password: '01234567891'
   });
+
   _user.save((err, u) => {
+    if (err) log(err);
+
     t.is(u.username, 'i5ting for findById');
-    
+
     User.findById(u._id, (err, doc) => {
       t.false(err);
-      t.is(doc.username, 'i5ting');
+      t.is(doc.username, 'i5ting for findById');
     });
   });
 });
+
 
 test('#findOne() return user obj', t => {
   User.findOne({username: 'i5ting'}, (err, doc) => {
@@ -65,10 +71,10 @@ test('#remove()', t => {
     username: 'i5ting for delete',
     password: '0123456789'
   });
-  
+
   _user.save((err, u) => {
     t.is(u.username, 'i5ting for delete');
-    
+
     User.remove({username: 'i5ting for delete'}, (err, doc) => {
       t.false(err);
       t.is(doc.result.ok, 1);
@@ -83,10 +89,10 @@ test('#findByIdAndUpdate()', t => {
     username: 'i5ting for update 1',
     password: '0123456789'
   });
-  
+
   _user.save((err, u) => {
     t.is(u.username, 'i5ting for update 1');
-    
+
     User.findByIdAndUpdate(u._id, {
       username: 'sang',
     }, (err, user) => {
@@ -115,3 +121,5 @@ test('#findOneAndUpdate()', t => {
     });
   });
 });
+
+
