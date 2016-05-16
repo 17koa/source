@@ -4,7 +4,7 @@ import test from 'ava';
 require('../connect');
 
 // 2、引入`User` Model
-const User = require('./user');
+const User = require('../user/virtual/user');
 
 // 3、定义`user` Entity
 const user_with_invite_code = new User({
@@ -27,7 +27,7 @@ test('#is_valid() === true if user_with_invite_code', t => {
 });
 
 test('#is_valid() === false if user_with_no_invite_code', t => {
-  user_with_no_invite_code.save((err, u) => {
+  user_with_no_invite_code.save((err, user) => {
     t.false(user.is_valid)
   })
 });

@@ -7,7 +7,7 @@
     "test": "npm run crud && npm run extend && npm run virtual",
     "crud": "ava crud -v",
     "extend":"ava -v extend/test.js",
-    "virtual":"ava -v virtual/test.js"
+    "virtual":"ava -v virtual"
   },
   "author": "",
   "license": "ISC",
