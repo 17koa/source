@@ -13,11 +13,11 @@ const user = new User({
   address  : '天津-天津-东丽区-空港商务园'
 });
 
-// test.before.cb(t => {
-//   User.remove({}, (err, result) => {
-//     // t.end
-//   })
-// })
+test.before.cb(t => {
+  User.remove({}, (err, result) => {
+    t.end()
+  })
+})
 
 test('#province city county detail_address', t => {
   user.save((err, u) => {
