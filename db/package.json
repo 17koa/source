@@ -4,14 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "npm run crud && npm run extend && npm run virtual",
+    "test": "npm run crud && npm run extend && npm run hook && npm run virtual",
     "crud": "ava crud -v",
-    "extend":"ava -v extend/test.js",
-    "virtual":"ava -v virtual"
+    "extend": "ava -v extend/test.js",
+    "hook": "ava -v hook/test.js",
+    "virtual": "ava -v virtual"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^0.8.6",
     "mongoose": "^4.4.14"
   },
   "devDependencies": {
