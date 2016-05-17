@@ -4,11 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "npm run crud && npm run extend && npm run hook && npm run virtual",
+    "test": "npm run crud && npm run extend && npm run hook && npm run virtual && npm run promisify",
     "crud": "ava crud -v",
     "extend": "ava -v extend/test.js",
     "hook": "ava -v hook/test.js",
-    "virtual": "ava -v virtual"
+    "virtual": "ava -v virtual",
+    "promisify": "ava -v promisify"
   },
   "author": "",
   "license": "ISC",
