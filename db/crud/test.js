@@ -16,10 +16,11 @@ let user = new User({
 global.log = console.log
 
 
-test('#save()', t => {
+test.cb('#save()', t => {
   user.save((err, u) => {
     if (err) log(err)
     t.is(u.username, 'i5ting');
+    t.end()
   });
 });
 
@@ -31,15 +32,16 @@ test.before.cb(t => {
   });
 });
 
-test('#find() return array', t => {
+test.cb('#find() return array', t => {
   User.find({}, (err, docs) => {
-    t.false(err);
+    t.ifError(err);
     t.is(docs.length, 1);
     t.is(docs[0].username, 'i5ting');
+    t.end();
   });
 });
 
-test('#findById() return one', t => {
+test.cb('#findById() return one', t => {
   let _user = new User({
     username: 'i5ting for findById',
     password: '01234567891'
@@ -51,22 +53,24 @@ test('#findById() return one', t => {
     t.is(u.username, 'i5ting for findById');
 
     User.findById(u._id, (err, doc) => {
-      t.false(err);
+      t.ifError(err);
       t.is(doc.username, 'i5ting for findById');
+      t.end();
     });
   });
 });
 
 
-test('#findOne() return user obj', t => {
+test.cb('#findOne() return user obj', t => {
   User.findOne({username: 'i5ting'}, (err, doc) => {
-    t.false(err);
+    t.ifError(err);
     t.is(doc.length, 1);
     t.is(doc.username, 'i5ting');
+    t.end();
   });
 });
 
-test('#remove()', t => {
+test.cb('#remove()', t => {
   const _user = new User({
     username: 'i5ting for delete',
     password: '0123456789'
@@ -76,15 +80,16 @@ test('#remove()', t => {
     t.is(u.username, 'i5ting for delete');
 
     User.remove({username: 'i5ting for delete'}, (err, doc) => {
-      t.false(err);
+      t.ifError(err);
       t.is(doc.result.ok, 1);
       t.is(doc.result.n, 1);
+      t.end();
     });
   });
 });
 
 
-test('#findByIdAndUpdate()', t => {
+test.cb('#findByIdAndUpdate()', t => {
   const _user = new User({
     username: 'i5ting for update 1',
     password: '0123456789'
@@ -96,13 +101,14 @@ test('#findByIdAndUpdate()', t => {
     User.findByIdAndUpdate(u._id, {
       username: 'sang',
     }, (err, user) => {
-      t.false(err);
+      t.ifError(err);
       t.is(user.username, 'sang');
+      t.end();
     });
   });
 });
 
-test('#findOneAndUpdate()', t => {
+test.cb('#findOneAndUpdate()', t => {
   const _user = new User({
     username: 'i5ting for update 2',
     password: '0123456789'
@@ -116,8 +122,9 @@ test('#findOneAndUpdate()', t => {
     }, {
       username: 'sang',
     }, (err, user) => {
-      t.false(err);
+      t.ifError(err);
       t.is(user.username, 'sang');
+      t.end();
     });
   });
 });
