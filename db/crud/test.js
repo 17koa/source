@@ -64,7 +64,6 @@ test.cb('#findById() return one', t => {
 test.cb('#findOne() return user obj', t => {
   User.findOne({username: 'i5ting'}, (err, doc) => {
     t.ifError(err);
-    t.is(doc.length, 1);
     t.is(doc.username, 'i5ting');
     t.end();
   });
@@ -123,7 +122,7 @@ test.cb('#findOneAndUpdate()', t => {
       username: 'sang',
     }, (err, user) => {
       t.ifError(err);
-      t.is(user.username, 'sang');
+      t.is(user.username, 'sanghg');
       t.end();
     });
   });
