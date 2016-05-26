@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset='uft-8' />
-    <title> ajax hello world </title>
+    <title> ajax with json </title>
   </head>  
 <body>
   <div id="demo"><h2>把AJAX返回的数据放到这里</h2></div>
@@ -13,13 +13,15 @@
       var xhr = new XMLHttpRequest();
       xhr.onreadystatechange = function() {
         if (xhr.readyState == 4 && xhr.status == 200) {
+          // json parse
+          var data = JSON.parse(xhr.responseText)
           // dom
-          document.getElementById("demo").innerHTML = xhr.responseText;
+          document.getElementById("demo").innerHTML = data.content;
           // style
           document.getElementById('demo').style.background = "lightblue";
         }
       };
-      xhr.open("GET", "ajax_info.txt", true);
+      xhr.open("GET", "data.json", true);
       xhr.send();
     }
   </script>
