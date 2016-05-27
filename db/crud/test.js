@@ -24,7 +24,7 @@ test.cb('#save()', t => {
   });
 });
 
-test.before.cb(t => {
+test.beforeEach.cb(t => {
   User.remove({}, function(err, result){
     User.find({}, (err, docs) => {
       t.end();
@@ -35,7 +35,7 @@ test.before.cb(t => {
 test.cb('#find() return array', t => {
   User.find({}, (err, docs) => {
     t.ifError(err);
-    t.is(docs.length, 1);
+    t.true(docs.length>0);
     t.is(docs[0].username, 'i5ting');
     t.end();
   });
@@ -98,11 +98,11 @@ test.cb('#findByIdAndUpdate()', t => {
     t.is(u.username, 'i5ting for update 1');
 
     User.findByIdAndUpdate(u._id, {
-      username: 'sang',
+      username: 'sang'
     }, (err, user) => {
       t.ifError(err);
       t.is(user.username, 'sang');
-      t.end();
+      t.end()
     });
   });
 });
@@ -115,16 +115,17 @@ test.cb('#findOneAndUpdate()', t => {
 
   _user.save((err, u) => {
     t.is(u.username, 'i5ting for update 2');
-
+      });
+    
     User.findOneAndUpdate({
-      username: 'i5ting for update 2',
+      username: 'i5ting for update 2'
     }, {
-      username: 'sang',
+      username: 'sang'
     }, (err, user) => {
       t.ifError(err);
-      t.is(user.username, 'sanghg');
+      t.is(user.username, 'sangsdsd');
       t.end();
-    });
+    
   });
 });
 
