@@ -3,15 +3,16 @@
   <head>
     <meta charset='uft-8' />
     <title> ajax with json </title>
+    <script src="/script/jquery.js"></script>
   </head>  
 <body>
   <input type='text' name='username' value='i5ting' id='myname'/>
   <div id="demo"><h2>把AJAX返回的数据放到这里</h2></div>
-  <button id="bt1" type="button" onclick="send_get_request()">发送get请求</button>
-  <button type="button" onclick="send_post_request()">发送post请求</button>
+  <button id="bt1" type="button">发送get请求</button>
+  <button id="bt2" type="button">发送post请求</button>
 
   <script>
-        $('bt1').click( function () {
+        $('#bt1').click( function () {
             var name1 = $("#myname").val();
               console.log(name1);
             $.get ('/api/get_json_with_param', {name:name1},function (data,status) {
