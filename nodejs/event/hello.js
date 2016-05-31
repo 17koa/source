@@ -1,13 +1,13 @@
 var EventEmitter = require('events').EventEmitter;
-var ee = new EventEmitter();
+var observer = new EventEmitter();
 
-ee.on('topic', function () {
+observer.on('topic', function () {
   console.log('topic has occured');
 });
 
 function main() {
   console.log('start');
-  ee.emit('topic');
+  observer.emit('topic');
   console.log('end');
 }
 
