@@ -1,0 +1,14 @@
+{
+  "name": "getting-start",
+  "version": "1.0.0",
+  "description": "",
+  "main": "simple.js",
+  "scripts": {
+    "test": "ava -v simple.js"
+  },
+  "devDependencies": {
+    "ava": "^0.15.2"
+  },
+  "author": "",
+  "license": "ISC"
+}
