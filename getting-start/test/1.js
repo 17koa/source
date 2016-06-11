@@ -7,7 +7,7 @@ function add (a, b) {
 }
 
 test('simple test', t => {
-  let c = 1 + 2
+  let c = add(1, 2)
   
   t.is(c, 3)
 });
