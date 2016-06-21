@@ -60,8 +60,7 @@ hello('./package.json').then(function(data){
 })
 
 
-
-var step = function(data){
+var step1 = function(data){
   console.log('\n\nway 3:\n')
   return new Promise(function(resolve, reject){
     console.log('promise result = ' + data)
@@ -75,12 +74,14 @@ var step = function(data){
   })
 }
 
-hello('./package.json').then(step).then(function(data){
+var step2 = function(data){
   console.log(data)
   
   return new Promise(function(resolve, reject){
     reject(new Error('reject with custom err'))
   });
-}).catch(function(err) {
+}
+
+hello('./package.json').then(step1).then(step2).catch(function(err) {
   console.log(err)
 })
