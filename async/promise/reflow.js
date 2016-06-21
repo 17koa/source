@@ -46,8 +46,36 @@ hello('./package.json').then(function(data){
     return new Promise(function(resolve, reject){
       resolve('1')
     });
+  }).catch(function(err) {
+    console.log(err)
   })
 }).then(function(data){
+  console.log(data)
+  
+  return new Promise(function(resolve, reject){
+    reject(new Error('reject with custom err'))
+  });
+}).catch(function(err) {
+  console.log(err)
+})
+
+
+
+var step = function(data){
+  console.log('\n\nway 3:\n')
+  return new Promise(function(resolve, reject){
+    console.log('promise result = ' + data)
+    resolve(data)
+  }).then(function(data){
+    return new Promise(function(resolve, reject){
+      resolve('1')
+    });
+  }).catch(function(err) {
+    console.log(err)
+  })
+}
+
+hello('./package.json').then(step).then(function(data){
   console.log(data)
   
   return new Promise(function(resolve, reject){
