@@ -20,7 +20,7 @@ function hello(i){
 }
 
 hello(1).then(function(value){
-    console.log('Promise.resolve 1 ' + value);
+    console.log('Promise.reject 1 ' + value);
 });
 
 hello(2).then(function(value){
