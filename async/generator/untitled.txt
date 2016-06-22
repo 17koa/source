@@ -1,0 +1,31 @@
+You can see that we can still pass in parameters (x in our example) with the initial foo( 5 ) iterator-instantiation call, just like with normal functions, making x be value 5.
+
+你可以看到我们foo( 5 )
+
+x = 5
+
+
+The first next(..) call, we don't send in anything. Why? Because there's no yield expression to receive what we pass in.
+
+第一个next(..) 调用，我们没有做任何，为啥呢？因为没有yield表达式去接受我们传过去的值。
+
+But if we did pass in a value to that first next(..) call, nothing bad would happen. It would just be a tossed-away value. ES6 says for generator functions to ignore the unused value in this case. (Note: At the time of writing, nightlies of both Chrome and FF are fine, but other browsers may not yet be fully compliant and may incorrectly throw an error in this case).
+
+但是，如果我们给第一个next(..)传值，也不会有什么坏事儿发生。这个值会被丢掉。ES6说在此种情景下generator函数会忽略没有用到的值。
+
+The yield (x + 1) is what sends out value 6. 
+
+The second next(12) call sends 12 to that waiting yield (x + 1) expression, so y is set to 12 * 2, value 24. 
+
+第二个next(12)调用，发送12给等待的yield (x + 1)表达式，所以y就等于12 * 2, 值为 24. 
+
+
+Then the subsequent yield (y / 3) (yield (24 / 3)) is what sends out the value 8. The third next(13) call sends 13 to that waiting yield (y / 3) expression, making z set to 13.
+
+之后的yield (y / 3) = (yield (24 / 3)) 是发送的值是8。
+
+第三个next(13)调用发送13给等待的yield (y / 3)表达式，即z=13
+
+Finally, return (x + y + z) is return (5 + 24 + 13), or 42 being returned out as the last value.
+
+最后，返回(x + y + z)其实是返回(5 + 24 + 13)，或者42 会成为最后返回的value值。
