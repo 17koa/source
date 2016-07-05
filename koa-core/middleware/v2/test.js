@@ -1,6 +1,6 @@
 var app = require('./app')
 
-app.use((ctx, next) =>{
+app.use((ctx, next) => {
   console.log(1)
   // before
   return next().then(() => {
@@ -9,7 +9,7 @@ app.use((ctx, next) =>{
   })
 })
 
-app.use(function *(next){
+app.use(function *(next) {
   console.log(3)
   yield next;
   console.log(4)
