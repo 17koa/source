@@ -3,7 +3,7 @@ const mongoose = require("mongoose")
 mongoose.Promise = require('bluebird')
 
 // 核心代码，是否开启测试
-mongoose.set('debug', true)
+mongoose.set('debug', false)
 
 const options = {
   useMongoClient: true,

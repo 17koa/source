@@ -24,7 +24,10 @@ test.cb('#save()', t => {
 
 test.beforeEach.cb(t => {
   User.remove({}, function(err, result){
+    console.log("revmoe = ")
     User.find({}, (err, docs) => {
+      console.log("docs = ")
+      console.log(docs)
       t.end()
     }) 
   })
@@ -34,8 +37,14 @@ test.cb('#find() return array', t => {
   User.find({}, (err, docs) => {
     t.ifError(err)
     t.true(docs.length>0)
+    console.log("docs+" + docs.length)
     console.log(docs)
-    t.is(docs[0].username, 'i5ting')
+    if (docs.length !== 1) {
+      t.is(docs.username, 'i5ting')
+    }else{
+      t.is(docs[0].username, 'i5ting')
+    }
+    
     t.end()
   })
 })
