@@ -1,10 +1,21 @@
 import test from 'ava'
 
+global.Promise = require('bluebird')
+var Promise = require("bluebird");
 // 1、引入`mongoose connect`
 require('../mini/connect')
 
 // 2、引入`User` Model
 const User = require('../mini/user')
+
+const ClearAll = function(){
+  return new Promise(function (resolve, reject) {
+    User.remove({}, function(err, doc){
+      if (err) reject(err)
+      resolve()
+    })
+  })
+}
 
 // 3、定义`user` Entity
 let user = new User({
@@ -15,67 +26,82 @@ let user = new User({
 global.log = console.log
 
 test.cb('#save()', t => {
-  user.save((err, u) => {
-    if (err) log(err)
+  ClearAll({}).then(function () {
+    return user.save()
+  }).then(function (u) {
     t.is(u.username, 'i5ting')
     t.end()
-  })
-})
-
-test.beforeEach.cb(t => {
-  User.remove({}, function(err, result){
-    console.log("revmoe = ")
-    User.find({}, (err, docs) => {
-      console.log("docs = ")
-      console.log(docs)
-      t.end()
-    }) 
-  })
-})
-
-test.cb('#find() return array', t => {
-  User.find({}, (err, docs) => {
+  }).catch(function (err) {
     t.ifError(err)
-    t.true(docs.length>0)
-    console.log("docs+" + docs.length)
-    console.log(docs)
-    if (docs.length !== 1) {
-      t.is(docs.username, 'i5ting')
-    }else{
-      t.is(docs[0].username, 'i5ting')
-    }
-    
     t.end()
   })
 })
 
-test.cb('#findById() return one', t => {
-  let _user = new User({
-    username: 'i5ting for findById',
-    password: '01234567891'
+test.cb('#find()', t => {
+  let user2 = new User({
+    username: 'koa',
+    password: '0123456789'
   })
 
-  _user.save((err, u) => {
-    if (err) log(err)
-
-    t.is(u.username, 'i5ting for findById')
-
-    User.findById(u._id, (err, doc) => {
-      t.ifError(err)
-      t.is(doc.username, 'i5ting for findById')
-      t.end()
-    })
-  })
-})
-
-test.cb('#findOne() return user obj', t => {
-  User.findOne({username: 'i5ting'}, (err, doc) => {
+  ClearAll({}).then(function () {
+    return Promise.all([user.save(), user2.save()])
+  }).then(function () {
+    return User.find({})
+  }).then(function (users) {
+    t.true(users.length == 2)
+    console.log( users)
+    t.true(users instanceof Array)
+    t.end()
+  }).catch(function (err) {
     t.ifError(err)
-    console.log(doc.username)
-    t.is(doc.username, 'i5ting')
     t.end()
   })
 })
+
+test.cb('#find() 2', t => {
+  ClearAll({}).then(function () {
+    return user.save()
+  }).then(function () {
+    return User.find({})
+  }).then(function (users) {
+    t.true(users.length == 2)
+    console.log( users)
+    t.true(users instanceof Object)
+    t.end()
+  }).catch(function (err) {
+    t.ifError(err)
+    t.end()
+  })
+})
+
+// test.cb('#findById() return one', t => {
+//   let _user = new User({
+//     username: 'i5ting for findById',
+//     password: '01234567891'
+//   })
+
+//   ClearAll().then(
+//     Promise.all(user.save(), _user.save())
+//   ).then((u) => {
+//     if (err) log(err)
+//     t.is(u.username, 'i5ting for findById')
+
+//     User.findById(u._id, (err, doc) => {
+//       t.ifError(err)
+//       t.is(doc.username, 'i5ting for findById')
+//       t.end()
+//     })
+//   })
+// })
+
+// test.cb('#findOne() return user obj', t => {
+//   User.findOne({username: 'i5ting'}, (err, doc) => {
+//     t.ifError(err)
+//     console.log(doc.username)
+//     t.is(doc.username, 'i5ting')
+//     t.end()
+//   })
+// })
 
 // test.cb('#remove()', t => {
 //   const _user = new User({
@@ -124,7 +150,7 @@ test.cb('#findOne() return user obj', t => {
 //   _user.save((err, u) => {
 //     t.is(u.username, 'i5ting for update 2')
 //       })
-    
+
 //     User.findOneAndUpdate({
 //       username: 'i5ting for update 2'
 //     }, {
