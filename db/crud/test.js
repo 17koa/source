@@ -2,6 +2,7 @@ import test from 'ava'
 import MongodbMemoryServer from 'mongodb-memory-server'
 import mongoose from 'mongoose'
 
+global.Promise = require('bluebird')
 // 1、引入`mongoose connect`
 require('../mini/connect')
 
@@ -45,9 +46,32 @@ test.serial('#findById() return one', async t => {
   }
 })
 
+function isPromise(obj) {
+  return !!obj && (typeof obj === 'object' || typeof obj === 'function') && typeof obj.then === 'function';
+}
 
 test.serial('#find() return array', async (t) => {
   const users = await User.find({})
   t.true(users instanceof Array)
 })
+
+test.serial('#remove() return array', async (t) => {
+  // console.log( isPromise(User.remove))
+
+  // const r = require('bluebird').promisify(User.remove)
+  // const result = await r({})
+  // console.log(result.result)
+
+  User.remove({}, async function(err, users) {
+    console.log(users)
+    const _user1 = await User.findOne({ username: 'i5ting' })
+  
+
+    t.true(_user1 === null)
+  })
+  
+})
+
+
+
 
