@@ -2,7 +2,6 @@ import test from 'ava'
 import MongodbMemoryServer from 'mongodb-memory-server'
 import mongoose from 'mongoose'
 
-global.Promise = require('bluebird')
 // 1、引入`mongoose connect`
 require('../mini/connect')
 
@@ -25,7 +24,7 @@ test.before(async () => {
 })
 
 test.beforeEach(async () => {
-  await user.save()
+  user = await user.save()
 })
 
 // test.afterEach.always(() => User.remove())
@@ -56,22 +55,38 @@ test.serial('#find() return array', async (t) => {
 })
 
 test.serial('#remove() return array', async (t) => {
-  // console.log( isPromise(User.remove))
-
-  // const r = require('bluebird').promisify(User.remove)
-  // const result = await r({})
+  const result = await User.remove({})
   // console.log(result.result)
+  const _user1 = await User.findOne({ username: 'i5ting' })
 
-  User.remove({}, async function(err, users) {
-    console.log(users)
-    const _user1 = await User.findOne({ username: 'i5ting' })
-  
-
-    t.true(_user1 === null)
-  })
-  
+  t.true(_user1 === null)
 })
 
 
 
+test.serial('#findByIdAndUpdate()', async (t) => {
+  console.log(user)
 
+  const newUser = await User.findByIdAndUpdate(user._id, {
+    username: 'sang'
+  }).exec()
+
+  console.log(newUser)
+  t.true(newUser.username === 'sang')
+})
+
+
+// test.cb('#findByIdAndUpdate()', t => {
+
+//   _user.save((err, u) => {
+//     t.is(u.username, 'i5ting for update 1');
+
+//     User.findByIdAndUpdate(u._id, {
+//       username: 'sang'
+//     }, (err, user) => {
+//       t.ifError(err);
+//       t.is(user.username, 'sang');
+//       t.end()
+//     });
+//   });
+// });
