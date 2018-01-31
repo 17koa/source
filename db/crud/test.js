@@ -28,10 +28,7 @@ test.beforeEach(async () => {
 })
 
 // test.afterEach.always(() => User.remove())
-test.afterEach(async () => {
-  // This runs after each test and other test hooks, even if they failed
-  await User.remove()
-})
+test.after(() => User.remove())
 
 test.serial('#findById() return one', async t => {
   try {
@@ -45,14 +42,29 @@ test.serial('#findById() return one', async t => {
   }
 })
 
-function isPromise(obj) {
-  return !!obj && (typeof obj === 'object' || typeof obj === 'function') && typeof obj.then === 'function';
-}
-
 test.serial('#find() return array', async (t) => {
   const users = await User.find({})
   t.true(users instanceof Array)
+
+  const _user1 = await User.findOne({username: 'i5ting' })
+  console.log(_user1)
+  t.true(_user1.username === 'i5ting')
 })
+
+test.serial('#findByIdAndUpdate()', async (t) => {
+  // console.log(user._id)
+
+  const _user1 = await User.find({ username: 'i5ting'})
+  console.log(_user1)
+
+  // const newUser = await User.findByIdAndUpdate(user._id, {
+  //   username: 'sang'
+  // })
+
+  // console.log(newUser)
+  // t.true(newUser.username === 'sang')
+})
+
 
 test.serial('#remove() return array', async (t) => {
   const result = await User.remove({})
@@ -61,20 +73,6 @@ test.serial('#remove() return array', async (t) => {
 
   t.true(_user1 === null)
 })
-
-
-
-test.serial('#findByIdAndUpdate()', async (t) => {
-  console.log(user)
-
-  const newUser = await User.findByIdAndUpdate(user._id, {
-    username: 'sang'
-  }).exec()
-
-  console.log(newUser)
-  t.true(newUser.username === 'sang')
-})
-
 
 // test.cb('#findByIdAndUpdate()', t => {
 
