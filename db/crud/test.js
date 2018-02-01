@@ -4,9 +4,6 @@ import mongoose from 'mongoose'
 
 mongoose.Promise = require('bluebird')
 
-// 1、引入`mongoose connect`
-// require('../mini/connect')
-
 // 定义Schema
 const UserSchema = new mongoose.Schema({
   username: {// 真实姓名
