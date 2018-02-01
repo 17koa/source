@@ -2,13 +2,27 @@ import test from 'ava'
 import MongodbMemoryServer from 'mongodb-memory-server'
 import mongoose from 'mongoose'
 
+mongoose.Promise = require('bluebird')
+
 // 1、引入`mongoose connect`
-require('../mini/connect')
+// require('../mini/connect')
 
-// 2、引入`User` Model
-const User = require('../mini/user')
+// 定义Schema
+const UserSchema = new mongoose.Schema({
+  username: {// 真实姓名
+    type: String,
+    required: true
+  },
+  password: { // 密码
+    type: String,
+    required: true
+  }
+});
 
-// 3、定义`user` Entity
+// 定义Model
+const User = mongoose.model('User', UserSchema);
+
+// 定义`user` Entity
 let user = new User({
   username: 'i5ting',
   password: '0123456789'
@@ -27,8 +41,15 @@ test.beforeEach(async () => {
   user = await user.save()
 })
 
-// test.afterEach.always(() => User.remove())
 test.after(() => User.remove())
+
+test.serial('#find() return array', async (t) => {
+  const users = await User.find({})
+  t.true(users instanceof Array)
+
+  const _user1 = await User.findOne({ username: 'i5ting' })
+  t.true(_user1.username === 'i5ting')
+})
 
 test.serial('#findById() return one', async t => {
   try {
@@ -42,49 +63,19 @@ test.serial('#findById() return one', async t => {
   }
 })
 
-test.serial('#find() return array', async (t) => {
-  const users = await User.find({})
-  t.true(users instanceof Array)
-
-  const _user1 = await User.findOne({username: 'i5ting' })
-  console.log(_user1)
-  t.true(_user1.username === 'i5ting')
+test.serial('#findOneAndUpdate()', async t => {
+  try {
+    const result = await user.update({ username: 'i5ting for update' })
+    const _user = await User.findById(user._id)
+    t.is(_user.username, 'i5ting for update')
+  } catch (error) {
+    t.ifError(error)
+  }
 })
-
-test.serial('#findByIdAndUpdate()', async (t) => {
-  // console.log(user._id)
-
-  const _user1 = await User.find({ username: 'i5ting'})
-  console.log(_user1)
-
-  // const newUser = await User.findByIdAndUpdate(user._id, {
-  //   username: 'sang'
-  // })
-
-  // console.log(newUser)
-  // t.true(newUser.username === 'sang')
-})
-
 
 test.serial('#remove() return array', async (t) => {
   const result = await User.remove({})
-  // console.log(result.result)
   const _user1 = await User.findOne({ username: 'i5ting' })
 
   t.true(_user1 === null)
 })
-
-// test.cb('#findByIdAndUpdate()', t => {
-
-//   _user.save((err, u) => {
-//     t.is(u.username, 'i5ting for update 1');
-
-//     User.findByIdAndUpdate(u._id, {
-//       username: 'sang'
-//     }, (err, user) => {
-//       t.ifError(err);
-//       t.is(user.username, 'sang');
-//       t.end()
-//     });
-//   });
-// });
