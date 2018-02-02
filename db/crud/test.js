@@ -79,7 +79,7 @@ test.serial('#findOneAndUpdate()', async t => {
 })
 
 test.serial('#remove() return array', async (t) => {
-  const result = await User.remove({})
+  await User.remove({})
   const _user1 = await User.findOne({ username: 'i5ting' })
 
   t.true(_user1 === null)
